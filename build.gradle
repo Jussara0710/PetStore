@@ -10,7 +10,15 @@ repositories {
 }
 
 dependencies {
+    // Test dependencies
     testImplementation group: 'org.testng', name: 'testng', version: '7.10.2'
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.5.0'
+
+    // SLF4J with Logback (a implementação de logging)
+    implementation 'ch.qos.logback:logback-classic:1.2.6' // Dependência do Logback
+    implementation 'org.slf4j:slf4j-api:1.7.32' // API do SLF4J
 }
 
+test {
+    useTestNG()
+}
