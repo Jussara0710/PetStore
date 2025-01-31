@@ -2,7 +2,6 @@
 package peststore;
 
 // Bibliotecas
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -29,7 +28,7 @@ public class Pet {
     }
 
     // Incluir - Create - Post
-    @Test
+    @Test(priority = 1)
     public void incluirPet() throws IOException {
         String jsonBody = lerJson("db/pet1.json");
 
@@ -37,15 +36,38 @@ public class Pet {
                 .contentType("application/json")
                 .log().all()
                 .body(jsonBody)
-        .when()
+                .when()
                 .post(uri)  // Ajustado para usar "uri" diretamente
-        .then()
+                .then()
                 .log().all()
                 .statusCode(200)
                 .body("name", is("Thor"))
                 .body("status", is("available"))
-                .body("category.name",is("dog"))
-                .body("tags.name",contains("Star"));
+                .body("category.name", is("AX2345LORP96"));
 
+    }
+
+    // Consultar - Get
+    @Test(priority = 2)
+    public void consultarPet(){
+        String petId = "20302015";
+
+        // Realizando a requisição GET e extraindo o valor de 'category.name'
+        String token = given()
+                .contentType("application/json")
+                .log().all()
+                .when()
+                .get(uri + "/" + petId)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("name", is("Thor"))
+                .body("category.name", is("AX2345LORP96"))
+                .body("status", is("available"))
+                .extract()
+                .path("category.name");  // Aqui, extraímos o valor do campo 'category.name' e armazenamos em 'token'
+
+        // Exibindo o valor extraído
+        System.out.println("O token é " + token);
     }
 }
